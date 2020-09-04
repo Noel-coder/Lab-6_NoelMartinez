@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -68,17 +69,18 @@ public class PlayList {
         FileWriter fw = null;
         BufferedWriter bw = null;
         try {
-            fw = new FileWriter(archivo, false);
+            fw = new FileWriter(archivo, true);
             bw = new BufferedWriter(fw);
             for (Cancion t : ListaCanciones) {
-                bw.write(t.getNombre()+ ";");
-                bw.write(t.getPuntuacion()+ ";");
-                bw.write(t.getAñoSalio()+ ";");
-                bw.write(t.getArtista()+ ";");
-                bw.write(t.getAlbum()+ ";");
+                bw.write(t.getNombre()+ "|");
+                bw.write(t.getPuntuacion()+ "|");
+                bw.write(t.getAñoSalio()+ "|");
+                bw.write(t.getArtista()+ "|");
+                bw.write(t.getAlbum()+ "|");
             }
             bw.flush();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null,"Algo anduvo mal :c");
         }
         bw.close();
         fw.close();
@@ -90,7 +92,7 @@ public class PlayList {
         if (archivo.exists()) {
             try {
                 sc = new Scanner(archivo);
-                sc.useDelimiter(";");
+                sc.useDelimiter("|");
                 while (sc.hasNext()) {
                     ListaCanciones.add(new Cancion(sc.next(),
                                     sc.next(),
