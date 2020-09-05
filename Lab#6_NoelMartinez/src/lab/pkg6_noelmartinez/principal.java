@@ -414,82 +414,52 @@ public class principal extends javax.swing.JFrame {
     }//GEN-LAST:event_bt_modificarMouseClicked
 
     private void bt_CrearPlaylistMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_CrearPlaylistMouseClicked
-        DefaultTableModel modelo = (DefaultTableModel) tabla2.getModel();
-        FileWriter fl = null;
-        BufferedWriter bw = null;
-        JFileChooser fileChooser = new JFileChooser("./");
-        String ruta = JOptionPane.showInputDialog(this, "Ingrese la ruta del archivo a guardar");
-        File archivo = new File(ruta);
-
-        if (archivo.exists()) {
-
-            try {
-                fl = new FileWriter(archivo);
-                bw = new BufferedWriter(fl);
-
-                int c = 0;
-                for (int i = 0; i < modelo.getRowCount(); i++) {
-
-                    bw.write(modelo.getValueAt(i, c) + "|" + modelo.getValueAt(i, c + 1)
-                            + "|" + modelo.getValueAt(i, c + 2) + "|" + modelo.getValueAt(i, c + 3)
-                            + "|" + modelo.getValueAt(i, c + 4) + "|");
-
-                    bw.newLine();
-
-                    c = 0;
-                }
-
-                bw.flush();
-
-                JOptionPane.showMessageDialog(this, "Se ha guardado en el "
-                        + "archivo dado por la ruta exitosamente");
-            } catch (Exception e) {
-            }
-        } else {
-            FileNameExtensionFilter filtro
-                    = new FileNameExtensionFilter("Archivos de texto", "txt");
-            fileChooser.addChoosableFileFilter(filtro);
-            int seleccion = fileChooser.showSaveDialog(this);
-
+        File fichero = null;
+        DefaultTableModel modelo
+                = (DefaultTableModel) this.tabla2.getModel();
+        int columnCount = tabla2.getColumnCount();
+        int rowNumber = tabla2.getRowCount();
+        //System.out.println("Arraylist with seleted index: " + tasks);
+//        if (selectedrow <= 0) {
+//            JOptionPane.showMessageDialog(this, "No hay canciones selected para agregar!");
+//        } else {
+        try {
+            JFileChooser fc = new JFileChooser("./");
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivo de texto", "txt");
+            fc.addChoosableFileFilter(filtro);
+            int seleccion = fc.showSaveDialog(this);
+            FileWriter fw = null;
+            BufferedWriter bw = null;
             if (seleccion == JFileChooser.APPROVE_OPTION) {
-                archivo = fileChooser.getSelectedFile();
-
                 try {
-
-                    fl = new FileWriter(archivo);
-                    bw = new BufferedWriter(fl);
-
-                    fl = new FileWriter(archivo);
-                    bw = new BufferedWriter(fl);
-                    archivo = null;
-                    if (fileChooser.getFileFilter().getDescription().equals("Archivo de texto")) {
-                        archivo = new File(fileChooser.getSelectedFile().getPath() + ".txt");
+                    fichero = null;
+                    if (fc.getFileFilter().getDescription().equals("Archivo de texto")) {
+                        fichero = new File(fc.getSelectedFile().getPath() + ".txt");
                     } else {
-                        archivo = fileChooser.getSelectedFile();
+                        fichero = fc.getSelectedFile();
                     }
-                    fl = new FileWriter(archivo);
-                    bw = new BufferedWriter(fl);
-                    int c = 0;
-                    for (int i = 0; i < modelo.getRowCount(); i++) {
-
-                        bw.write(modelo.getValueAt(i, c) + "|" + modelo.getValueAt(i, c + 1)
-                                + "|" + modelo.getValueAt(i, c + 2) + "|" + modelo.getValueAt(i, c + 3)
-                                + "|" + modelo.getValueAt(i, c + 4) + "|");
-
-                        bw.newLine();
-
-                        c = 0;
+                    fw = new FileWriter(fichero);//apunta al archivo
+                    bw = new BufferedWriter(fw);//apunta al canal
+                    for (int i = 0; i < rowNumber; i++) {
+                        for (int j = 0; j < columnCount; j++) {
+                            if (j == columnCount - 1) {
+                                bw.write(((String) modelo.getValueAt(i, j)));
+                                bw.write("\n");
+                            } else {
+                                bw.write(((String) modelo.getValueAt(i, j)) + "|");
+                            }
+                        }
                     }
-
                     bw.flush();
-
+                    JOptionPane.showMessageDialog(null, "Archivo guardado excitosamente");
                 } catch (Exception e) {
                 }
             }
-
-            JOptionPane.showMessageDialog(this, "Se ha creado el archivo");
-
+        } catch (Exception e) {
         }
+
+        //JOptionPane.showMessageDialog(this, "Se ha creado el archivo");
+
     }//GEN-LAST:event_bt_CrearPlaylistMouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
