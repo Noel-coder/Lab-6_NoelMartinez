@@ -8,11 +8,14 @@ package lab.pkg6_noelmartinez;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -23,12 +26,19 @@ import javax.swing.table.DefaultTableModel;
  * @author noelg
  */
 public class principal extends javax.swing.JFrame {
-
+    DefaultTableModel modelo;
     /**
      * Creates new form principal
      */
     public principal() {
         initComponents();
+        modelo = new DefaultTableModel();
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Puntuacion");
+        modelo.addColumn("Año en que salio");
+        modelo.addColumn("Artista");
+        modelo.addColumn("Album");
+        this.tabla2.setModel(modelo);
     }
 
     /**
@@ -61,7 +71,13 @@ public class principal extends javax.swing.JFrame {
         tabla2 = new javax.swing.JTable();
         bt_eliminarplaylist = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        ta_mandar = new javax.swing.JTextArea();
+        jLabel6 = new javax.swing.JLabel();
+        tf_fila = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        tf_columna = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        tf_nuevo = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -170,10 +186,16 @@ public class principal extends javax.swing.JFrame {
             }
         });
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane3.setViewportView(jTextArea1);
+        ta_mandar.setEditable(false);
+        ta_mandar.setColumns(20);
+        ta_mandar.setRows(5);
+        jScrollPane3.setViewportView(ta_mandar);
+
+        jLabel6.setText("Fila");
+
+        jLabel7.setText("Columna");
+
+        jLabel8.setText("Nuevo Dato:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -193,21 +215,40 @@ public class principal extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(tf_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(tf_año, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
-                                                .addComponent(tf_artista))
-                                            .addComponent(sp_puntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(tf_album, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(52, 52, 52)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(bt_modificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(bt_eliminarplaylist, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(bt_agregarplaylist, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)
-                                            .addComponent(bt_agregar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                                            .addComponent(tf_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(tf_año, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
+                                                        .addComponent(tf_artista))
+                                                    .addComponent(sp_puntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(tf_album, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                                        .addGap(52, 52, 52)
+                                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                            .addComponent(bt_modificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                            .addComponent(bt_eliminarplaylist, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                            .addComponent(bt_agregarplaylist, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)
+                                                            .addComponent(bt_agregar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                                        .addGap(40, 40, 40)
+                                                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGap(6, 6, 6)
+                                                        .addComponent(tf_fila, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(jLabel7)
+                                                        .addGap(4, 4, 4)
+                                                        .addComponent(tf_columna, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(jLabel8)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(tf_nuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(85, 85, 85)))
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
                                     .addComponent(jScrollPane2)))
@@ -249,9 +290,13 @@ public class principal extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(bt_agregarplaylist)
-                                .addGap(27, 27, 27)
-                                .addComponent(bt_modificar)
-                                .addGap(99, 99, 99))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel6)
+                                    .addComponent(tf_fila, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel7)
+                                    .addComponent(tf_columna, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(15, 15, 15))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(19, 19, 19)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -261,13 +306,24 @@ public class principal extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(tf_artista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel4))
-                                .addGap(60, 60, 60)
+                                .addGap(17, 17, 17)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(43, 43, 43)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel5)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(tf_album, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(bt_eliminarplaylist)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)))
+                                    .addComponent(tf_album, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel8)
+                                    .addComponent(tf_nuevo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(bt_modificar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(bt_eliminarplaylist)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                         .addComponent(bt_CrearPlaylist, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
         );
@@ -301,20 +357,13 @@ public class principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bt_agregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_agregarMouseClicked
-        String nombre = tf_nombre.getText();
-        String puntuacion = sp_puntuacion.getValue().toString();
-        String añoSalio = tf_año.getText();
-        String artista = tf_artista.getText();
-        String album = tf_album.getText();
-        Object[] newrow = {
-            nombre,
-            puntuacion,
-            añoSalio,
-            artista,
-            album,};
-        DefaultTableModel modelo = (DefaultTableModel) tabla1.getModel();
-        modelo.addRow(newrow);
-        tabla1.setModel(modelo);
+        String [] info = new String [5];
+        info[0] = tf_nombre.getText();
+        info[1] = sp_puntuacion.getValue().toString();
+        info[2] = tf_año.getText();
+        info[3] = tf_artista.getText();
+        info[4] = tf_album.getText();
+        modelo.addRow(info);
         JOptionPane.showMessageDialog(null, "Cancion ingresado con exito!");
         tf_nombre.setText("");
         tf_año.setText("");
@@ -324,7 +373,9 @@ public class principal extends javax.swing.JFrame {
     }//GEN-LAST:event_bt_agregarMouseClicked
 
     private void bt_modificarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_modificarMouseClicked
-
+        int fila = Integer.parseInt(tf_fila.getText());
+        int columna = Integer.parseInt(tf_columna.getText());
+        modelo.setValueAt(tf_nuevo.getText(), fila, columna);
     }//GEN-LAST:event_bt_modificarMouseClicked
 
     private void bt_CrearPlaylistMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_CrearPlaylistMouseClicked
@@ -407,11 +458,8 @@ public class principal extends javax.swing.JFrame {
     }//GEN-LAST:event_bt_CrearPlaylistMouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        DefaultTableModel modelo = (DefaultTableModel) tabla2.getModel();
-        Scanner sc = null;
 
         JFileChooser fileChooser = new JFileChooser("./");
-        limpiarTabla();
 
         int seleccion = fileChooser.showOpenDialog(this);
 
@@ -419,29 +467,16 @@ public class principal extends javax.swing.JFrame {
             File archivo = fileChooser.getSelectedFile();
 
             try {
-
-                sc = new Scanner(archivo);
-                sc.useDelimiter("|");
-                while (sc.hasNext()) {
-
-                    Cancion c = new Cancion(sc.next(), sc.next(), sc.next(), sc.next(), sc.next());
-                    sc.nextLine();
-
-                    Object newRow[] = {
-                        c.getNombre(),
-                        c.getPuntuacion(),
-                        c.getAñoSalio(),
-                        c.getArtista(),
-                        c.getAlbum()
-                    };
-
-                    modelo.addRow(newRow);
-
+                BufferedReader leer = new BufferedReader(new FileReader(archivo));
+                String linea = leer.readLine();
+                while (linea != null) {                    
+                    ta_mandar.append(linea);
+                    linea= leer.readLine();
                 }
-
-                tabla2.setModel(modelo);
-
-            } catch (Exception e) {
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -476,7 +511,7 @@ public class principal extends javax.swing.JFrame {
         String añoSalio = tf_año.getText();
         String artista = tf_artista.getText();
         String album = tf_album.getText();
-        Object[] newrow = {
+        Object [] newrow = {
             nombre,
             puntuacion,
             añoSalio,
@@ -497,7 +532,7 @@ public class principal extends javax.swing.JFrame {
         int filasec = tabla2.getSelectedRow();
         if (filasec >= 0) {
             DefaultTableModel modelo = (DefaultTableModel) tabla2.getModel();
-            modelo.removeRow(tabla1.getSelectedRow());
+            modelo.removeRow(tabla2.getSelectedRow());
             tabla2.setModel(modelo);
         } else {
             JOptionPane.showMessageDialog(this, "No hay una fila seleccionada, porfavor seleccione una!");
@@ -550,6 +585,9 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
@@ -557,13 +595,16 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JSpinner sp_puntuacion;
+    private javax.swing.JTextArea ta_mandar;
     private javax.swing.JTable tabla1;
     private javax.swing.JTable tabla2;
     private javax.swing.JTextField tf_album;
     private javax.swing.JTextField tf_artista;
     private javax.swing.JTextField tf_año;
+    private javax.swing.JTextField tf_columna;
+    private javax.swing.JTextField tf_fila;
     private javax.swing.JTextField tf_nombre;
+    private javax.swing.JTextField tf_nuevo;
     // End of variables declaration//GEN-END:variables
 }
