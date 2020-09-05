@@ -26,7 +26,9 @@ import javax.swing.table.DefaultTableModel;
  * @author noelg
  */
 public class principal extends javax.swing.JFrame {
+
     DefaultTableModel modelo;
+
     /**
      * Creates new form principal
      */
@@ -392,7 +394,7 @@ public class principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bt_agregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_agregarMouseClicked
-        String [] info = new String [5];
+        String[] info = new String[5];
         info[0] = tf_nombre.getText();
         info[1] = sp_puntuacion.getValue().toString();
         info[2] = tf_año.getText();
@@ -414,15 +416,12 @@ public class principal extends javax.swing.JFrame {
     }//GEN-LAST:event_bt_modificarMouseClicked
 
     private void bt_CrearPlaylistMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_CrearPlaylistMouseClicked
-        File fichero = null;
+        File archivo = null;
         DefaultTableModel modelo
-                = (DefaultTableModel) this.tabla2.getModel();
+                = (DefaultTableModel) tabla2.getModel();
         int columnCount = tabla2.getColumnCount();
         int rowNumber = tabla2.getRowCount();
-        //System.out.println("Arraylist with seleted index: " + tasks);
-//        if (selectedrow <= 0) {
-//            JOptionPane.showMessageDialog(this, "No hay canciones selected para agregar!");
-//        } else {
+
         try {
             JFileChooser fc = new JFileChooser("./");
             FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivo de texto", "txt");
@@ -432,13 +431,13 @@ public class principal extends javax.swing.JFrame {
             BufferedWriter bw = null;
             if (seleccion == JFileChooser.APPROVE_OPTION) {
                 try {
-                    fichero = null;
+                    archivo = null;
                     if (fc.getFileFilter().getDescription().equals("Archivo de texto")) {
-                        fichero = new File(fc.getSelectedFile().getPath() + ".txt");
+                        archivo = new File(fc.getSelectedFile().getPath() + ".txt");
                     } else {
-                        fichero = fc.getSelectedFile();
+                        archivo = fc.getSelectedFile();
                     }
-                    fw = new FileWriter(fichero);//apunta al archivo
+                    fw = new FileWriter(archivo);//apunta al archivo
                     bw = new BufferedWriter(fw);//apunta al canal
                     for (int i = 0; i < rowNumber; i++) {
                         for (int j = 0; j < columnCount; j++) {
@@ -457,9 +456,6 @@ public class principal extends javax.swing.JFrame {
             }
         } catch (Exception e) {
         }
-
-        //JOptionPane.showMessageDialog(this, "Se ha creado el archivo");
-
     }//GEN-LAST:event_bt_CrearPlaylistMouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -474,9 +470,9 @@ public class principal extends javax.swing.JFrame {
             try {
                 BufferedReader leer = new BufferedReader(new FileReader(archivo));
                 String linea = leer.readLine();
-                while (linea != null) {                    
-                    ta_mandar.append(linea+"\n");
-                    linea= leer.readLine();
+                while (linea != null) {
+                    ta_mandar.append(linea + "\n");
+                    linea = leer.readLine();
                 }
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -516,7 +512,7 @@ public class principal extends javax.swing.JFrame {
         String añoSalio = tf_año.getText();
         String artista = tf_artista.getText();
         String album = tf_album.getText();
-        Object [] newrow = {
+        Object[] newrow = {
             nombre,
             puntuacion,
             añoSalio,
